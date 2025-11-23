@@ -1,0 +1,42 @@
+using System.Numerics;
+using BeatmapParser.Enums;
+
+namespace BeatmapParser.HitObjects;
+
+/// <summary>
+/// Represents a hold object in a mania beatmap.
+/// </summary>
+public class ManiaHold : HitObject
+{
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ManiaHold"/> class.
+    /// </summary>
+    /// <param name="coordinates">The coordinates of the hold object.</param>
+    /// <param name="time">The time of the hold object.</param>
+    /// <param name="type">The type of the hold object.</param>
+    /// <param name="hitSounds">The list of hit sounds for the hold object.</param>
+    /// <param name="newCombo">A value indicating whether the hold object starts a new combo.</param>
+    /// <param name="comboOffset">The color of the combo for the hold object.</param>
+    public ManiaHold(Vector2 coordinates, TimeSpan time, HitObjectType type, (HitSounds.HitSample, List<HitSound>) hitSounds, bool newCombo, uint comboOffset) : base(coordinates, time, type, hitSounds, newCombo, comboOffset)
+    { }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ManiaHold"/> class.
+    /// </summary>
+    public ManiaHold()
+    {
+        Coordinates = new Vector2();
+        Time = new TimeSpan();
+        HitSounds = (new HitSounds.HitSample(), new List<HitSound>());
+        NewCombo = false;
+        ComboOffset = 0;
+    }
+
+    /// <summary>
+    /// Initializes a new instance of the <see cref="ManiaHold"/> class.
+    /// </summary>
+    /// <param name="baseObject"></param>
+    public ManiaHold(HitObject baseObject) : base(baseObject)
+    {
+    }
+}
