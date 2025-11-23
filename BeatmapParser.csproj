@@ -4,5 +4,14 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <LangVersion>latestmajor</LangVersion>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <PackageId>MapWizard.BeatmapParser</PackageId>
+    <Title>BeatmapParser</Title>
+    <Authors>Lucas Veiga</Authors>
+    <Description>osu! beatmap parser for dotnet</Description>
+    <PackageProjectUrl>https://github.com/maotovisk/BeatmapParser</PackageProjectUrl>
+    <RepositoryUrl>https://github.com/maotovisk/BeatmapParser</RepositoryUrl>
+    <PackageReadmeFile>readme.md</PackageReadmeFile>
+    <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
 </Project>
