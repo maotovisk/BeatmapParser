@@ -15,7 +15,7 @@ A lightweight C# library for decoding, editing, and re-encoding osu! `.osu` beat
 ## Getting Started
 ```bash
 # clone your fork
-git clone <your fork of BeatmapParser>
+git clone https://github.com/maotovisk/BeatmapParser
 cd BeatmapParser
 
 # restore & build the library
