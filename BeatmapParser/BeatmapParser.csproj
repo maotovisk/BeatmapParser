@@ -6,7 +6,7 @@
     <LangVersion>latestmajor</LangVersion>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PackageId>MapWizard.BeatmapParser</PackageId>
-    <Title>BeatmapParser</Title>
+    <Title>Beatmap Parser</Title>
     <Authors>Lucas Veiga</Authors>
     <Description>osu! beatmap parser for dotnet</Description>
     <PackageProjectUrl>https://github.com/maotovisk/BeatmapParser</PackageProjectUrl>
@@ -14,4 +14,8 @@
     <PackageReadmeFile>readme.md</PackageReadmeFile>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
   </PropertyGroup>
+  <ItemGroup>
+    <None Include="../readme.md" Pack="true" PackagePath="" />
+    <None Include="../LICENSE" Pack="true" PackagePath="" />
+  </ItemGroup>
 </Project>

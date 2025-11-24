@@ -13,24 +13,10 @@ A lightweight C# library for decoding, editing, and re-encoding osu! `.osu` beat
 - .NET SDK 10.0 (preview) or newer. The project’s `TargetFramework` is `net10.0`; earlier SDKs will fail to restore/build.
 
 ## Getting Started
-```bash
-# clone your fork
-git clone https://github.com/maotovisk/BeatmapParser
-cd BeatmapParser
-
-# restore & build the library
-DOTNET_TieredPGO=1 dotnet build
+Get it from NuGet:
+```sh
+dotnet add package MapWizard.BeatmapParser --version 1.0.0
 ```
-
-To consume the library from another project, either:
-1. Reference the `.csproj` directly:
-   ```bash
-   dotnet add <your-project>.csproj reference BeatmapParser/BeatmapParser.csproj
-   ```
-2. Or add the source files as a git submodule and include the project in your solution.
-
-> The repository currently has no published NuGet package; build from source or vendor the project into your solution.
-
 ## Usage
 ### Decode an existing beatmap
 ```csharp
@@ -68,23 +54,21 @@ If you already have the `.osu` contents loaded, call `Beatmap.Decode(string beat
 - `Sections/` – strongly typed representations for each numbered section in an osu! file.
 - `HitObjects/` – models for circles, sliders, spinners, mania holds, and helper classes to work with curve points and samples.
 - `TimingPoints/` – handling for inherited/uninherited timing points and BPM/volume calculations.
-- `Events/` & `Colours/` – storyboard primitives and combo/taiko colour definitions.
+- `Events/` & `Colours/` – storyboard primitives and combo colour definitions.
 
 ## Development Workflow
 - `dotnet build` compiles the library.
-- Tests are not yet included; please add coverage for new functionality (consider `dotnet test` once a test project exists).
+- `dotnet test` runs the unit tests in `BeatmapParser.Tests`.
 - Keep changes targeting `.NET 10` unless the `BeatmapParser.csproj` is updated to multi-target.
 
 ## Contributing
 1. Fork and branch from `main`.
 2. Keep PRs focused; add/adjust section decoders with accompanying unit tests where possible.
-3. Run `dotnet build` before submitting.
+3. Run `dotnet build` and `dotnet test` before submitting.
 4. Document new public APIs and update this README with additional usage notes if appropriate.
 
 ## Roadmap & Known Limitations
 - Encoding is only guaranteed for format versions 14 and 128.
-- Storyboard command support exists but lacks higher-level helpers; extending `Events/Commands` is welcome.
-- No automated test suite yet; regressions are caught manually.
 
 ## License
 A license file is not currently included. Please contact the repository maintainer before using the code in commercial projects.
