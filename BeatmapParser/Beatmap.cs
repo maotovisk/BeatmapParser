@@ -189,7 +189,9 @@ public class Beatmap : IEncodable
             builder.AppendLine($"[{SectionType.TimingPoints}]");
             if (TimingPoints.TimingPointList.Count > 0)
                 builder.AppendLine(TimingPoints.Encode());
-            builder.AppendLine();
+            
+            if (Helpers.Helper.FormatVersion != 128)
+                builder.AppendLine();
         }
 
         if (Colours != null)

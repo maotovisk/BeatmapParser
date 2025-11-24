@@ -91,5 +91,20 @@ public class BeatmapEncodingTests
             Assert.That(reallyComplexBeatmap, Is.EqualTo(encoded));
         }
     }
+    
+    [Test]
+    public void Encode_LazerBeatmap_ShouldEncodeCorrectly()
+    {
+        var lazerBeatmap = TestData.LazerBeatmap.Replace("\r\n", "\n");
+        
+        var encoded = Beatmap.Decode(lazerBeatmap).Encode().Replace("\r\n", "\n");
+        
+        using (Assert.EnterMultipleScope())
+        {
+            Assert.That(encoded, Is.Not.Null);
+            Assert.That(encoded, Does.Contain("osu file format v128"));
+            Assert.That(encoded, Is.EqualTo(lazerBeatmap));
+        }
+    }
 }
 

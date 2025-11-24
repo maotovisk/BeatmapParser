@@ -24,11 +24,11 @@
     <ProjectReference Include="..\BeatmapParser\BeatmapParser.csproj" />
   </ItemGroup>
 
-  <!-- Ensure the sample resource is copied to the test output so tests can read it at runtime -->
-  <ItemGroup>
-    <None Include="Resources/really_complex_beatmap.osu">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+  <!-- Add the resource files for testing -->
+    <ItemGroup>
+        <None Update="Resources\*.osu">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </None>
+    </ItemGroup>
 
 </Project>
