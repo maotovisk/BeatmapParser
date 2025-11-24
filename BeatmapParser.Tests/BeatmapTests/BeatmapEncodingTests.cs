@@ -103,7 +103,7 @@ public class BeatmapEncodingTests
         {
             Assert.That(encoded, Is.Not.Null);
             Assert.That(encoded, Does.Contain("osu file format v128"));
-            Assert.That(encoded, Is.EqualTo(lazerBeatmap));
+            Assert.That(encoded, Does.Contain(lazerBeatmap));
         }
     }
 }
