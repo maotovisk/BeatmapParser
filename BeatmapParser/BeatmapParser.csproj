@@ -9,7 +9,7 @@
     <Title>Beatmap Parser</Title>
     <Authors>Lucas Veiga</Authors>
     <Description>osu! beatmap parser for dotnet</Description>
-    <Version>1.0.1</Version>
+    <Version>1.0.2</Version>
     <PackageProjectUrl>https://github.com/maotovisk/BeatmapParser</PackageProjectUrl>
     <RepositoryUrl>https://github.com/maotovisk/BeatmapParser</RepositoryUrl>
     <PackageReadmeFile>readme.md</PackageReadmeFile>
