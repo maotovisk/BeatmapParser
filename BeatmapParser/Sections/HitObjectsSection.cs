@@ -49,12 +49,12 @@ public class HitObjectsSection
 
                 var type = Helpers.Helper.ParseHitObjectType(int.Parse(split[3]));
 
-                // todo: ManiaHold case
                 IHitObject hitObject = type switch
                 {
                     HitObjectType.Circle => Circle.Decode(split),
                     HitObjectType.Slider => Slider.Decode(split, timingPoints, difficultySection),
                     HitObjectType.Spinner => Spinner.Decode(split),
+                    HitObjectType.ManiaHold => ManiaHold.Decode(split),
                     _ => HitObject.Decode(split),
                 };
 
