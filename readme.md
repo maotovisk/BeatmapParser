@@ -71,5 +71,4 @@ If you already have the `.osu` contents loaded, call `Beatmap.Decode(string beat
 - Encoding is only guaranteed for format versions 14 and 128.
 
 ## License
-A license file is not currently included. Please contact the repository maintainer before using the code in commercial projects.
-
+MIT
