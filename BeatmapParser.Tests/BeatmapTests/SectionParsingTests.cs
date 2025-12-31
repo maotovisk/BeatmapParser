@@ -1,4 +1,5 @@
 using BeatmapParser;
+using BeatmapParser.Enums;
 
 namespace BeatmapParser.Tests.BeatmapTests;
 
@@ -27,7 +28,7 @@ public class SectionParsingTests
         Assert.That(beatmap.GeneralSection.AudioFilename, Is.EqualTo("audio.mp3"));
         Assert.That(beatmap.GeneralSection.AudioLeadIn, Is.EqualTo(0));
         Assert.That(beatmap.GeneralSection.PreviewTime, Is.EqualTo(10000));
-        Assert.That(beatmap.GeneralSection.Mode, Is.EqualTo(0));
+        Assert.That(beatmap.GeneralSection.Mode, Is.EqualTo(Ruleset.Osu));
         Assert.That(beatmap.GeneralSection.StackLeniency, Is.EqualTo(0.7));
     }
 

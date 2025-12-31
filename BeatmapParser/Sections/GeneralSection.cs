@@ -1,5 +1,6 @@
 using System.Globalization;
 using System.Text;
+using BeatmapParser.Enums;
 
 namespace BeatmapParser.Sections;
 
@@ -41,7 +42,7 @@ public class GeneralSection
     /// <summary>
     /// Game mode (0 = osu!, 1 = Taiko, 2 = CtB, 3 = osu!mania)
     /// </summary>
-    public int? Mode { get; set; }
+    public Ruleset? Mode { get; set; }
 
     /// <summary>
     /// Whether or not breaks have a letterbox effect
@@ -114,7 +115,7 @@ public class GeneralSection
         bool? countdown,
         string? sampleSet,
         double? stackLeniency,
-        int? mode,
+        Ruleset? mode,
         bool? letterboxInBreaks,
         bool? useSkinSprites,
         string? overlayPosition,
@@ -155,7 +156,7 @@ public class GeneralSection
         Countdown = false;
         SampleSet = "Normal";
         StackLeniency = 0;
-        Mode = 0;
+        Mode = Ruleset.Osu;
         LetterboxInBreaks = false;
         UseSkinSprites = false;
         OverlayPosition = string.Empty;
@@ -199,7 +200,7 @@ public class GeneralSection
                 countdown: general.TryGetValue("Countdown", out var countdown) ? int.Parse(countdown) == 1 : null,
                 sampleSet: general.GetValueOrDefault("SampleSet", "Normal"),
                 stackLeniency: general.TryGetValue("StackLeniency", out var stackLeniency) ? double.Parse(stackLeniency, CultureInfo.InvariantCulture) : 7,
-                mode: general.TryGetValue("Mode", out var mode) ? int.Parse(mode) : 0,
+                mode: general.TryGetValue("Mode", out var mode) ? (Ruleset)int.Parse(mode) : 0,
                 letterboxInBreaks: general.TryGetValue("LetterboxInBreaks", out var letterboxInBreaks) ? int.Parse(letterboxInBreaks) == 1 : null,
                 useSkinSprites: general.TryGetValue("UseSkinSprites", out var skinSprites) ? int.Parse(skinSprites) == 1 : null,
                 overlayPosition: general.GetValueOrDefault("OverlayPosition"),
@@ -240,6 +241,12 @@ public class GeneralSection
             if (prop.GetValue(this) is double doubleValue)
             {
                 builder.AppendLine($"{prop.Name}: {doubleValue.ToString(CultureInfo.InvariantCulture)}");
+                continue;
+            }
+
+            if (prop.GetValue(this) is Ruleset ruleset)
+            {
+                builder.AppendLine($"{prop.Name}: {(int)ruleset}");
                 continue;
             }
 
