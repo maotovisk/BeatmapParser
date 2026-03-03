@@ -10,6 +10,10 @@ public static class TestData
 
     public const string ManiaHoldLegacyTailBeatmapContent = "osu file format v14\n\n[General]\nAudioFilename: audio.mp3\nMode:3\n\n[Metadata]\nTitle:Test\nArtist:Test\nCreator:Test\nVersion:Mania\n\n[Difficulty]\nHPDrainRate:5\nCircleSize:4\nOverallDifficulty:5\nApproachRate:5\nSliderMultiplier:1.4\nSliderTickRate:1\n\n[Events]\n\n[HitObjects]\n64,192,1000,128,0,2828,0:0:0:0:\n";
 
+    public const string HitSampleNegativeIndexBeatmapContent = "osu file format v14\n\n[General]\nAudioFilename: audio.mp3\n\n[Metadata]\nTitle:Test\nArtist:Test\nCreator:Test\nVersion:Normal\n\n[Difficulty]\nHPDrainRate:5\nCircleSize:4\nOverallDifficulty:5\nApproachRate:5\nSliderMultiplier:1.4\nSliderTickRate:1\n\n[Events]\n\n[HitObjects]\n256,192,1000,1,0,2:3:-1:0:\n";
+
+    public const string HitSampleOverflowIndexBeatmapContent = "osu file format v14\n\n[General]\nAudioFilename: audio.mp3\n\n[Metadata]\nTitle:Test\nArtist:Test\nCreator:Test\nVersion:Normal\n\n[Difficulty]\nHPDrainRate:5\nCircleSize:4\nOverallDifficulty:5\nApproachRate:5\nSliderMultiplier:1.4\nSliderTickRate:1\n\n[Events]\n\n[HitObjects]\n256,192,1000,1,0,2:3:99999999999999999999:0:\n";
+
     public static readonly string ReallyComplexBeatmap = LoadResourceAsset("really_complex_beatmap.osu");
 
     public static readonly string LazerBeatmap = LoadResourceAsset("lazer_beatmap.osu");

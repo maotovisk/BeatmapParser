@@ -76,4 +76,24 @@ public class BeatmapDecodingTests
         var hold = (ManiaHold)beatmap.HitObjects.Objects[0];
         Assert.That(hold.End.TotalMilliseconds, Is.EqualTo(2828));
     }
+
+    [Test]
+    public void Decode_HitSample_WithNegativeIndex_ShouldFallbackToZero()
+    {
+        var beatmap = Beatmap.Decode(TestData.HitSampleNegativeIndexBeatmapContent);
+        var sample = beatmap.HitObjects.Objects[0].HitSounds.SampleData;
+
+        Assert.That(sample.Index, Is.EqualTo(0));
+        Assert.That(sample.Volume, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Decode_HitSample_WithOverflowIndex_ShouldFallbackToZero()
+    {
+        var beatmap = Beatmap.Decode(TestData.HitSampleOverflowIndexBeatmapContent);
+        var sample = beatmap.HitObjects.Objects[0].HitSounds.SampleData;
+
+        Assert.That(sample.Index, Is.EqualTo(0));
+        Assert.That(sample.Volume, Is.EqualTo(0));
+    }
 }

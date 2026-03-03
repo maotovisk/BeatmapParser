@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Text;
 using BeatmapParser.Enums;
 
@@ -70,12 +71,12 @@ public class HitSample
     {
         try
         {
-            var split = data.Split(':');
+            var split = data.Split(':', 5);
             return new HitSample(
-                normalSet: (SampleSet)uint.Parse(split[0]),
-                additionSet: (SampleSet)uint.Parse(split[1]),
-                index: split.Length > 2 ? uint.Parse(split[2]) : null,
-                volume: split.Length > 3 ? uint.Parse(split[3]) : null,
+                normalSet: ParseSampleSet(split, 0),
+                additionSet: ParseSampleSet(split, 1),
+                index: ParseOptionalUInt(split, 2),
+                volume: ParseOptionalUInt(split, 3),
                 fileName: split.Length > 4 ? split[4] : null
             );
         }
@@ -83,6 +84,36 @@ public class HitSample
         {
             throw new Exception($"Failed to parse HitSample {ex}");
         }
+    }
+
+    private static SampleSet ParseSampleSet(string[] split, int index)
+    {
+        if (split.Length <= index || string.IsNullOrWhiteSpace(split[index]))
+            return SampleSet.Default;
+
+        if (!int.TryParse(split[index], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+            return SampleSet.Default;
+
+        if (value < 0)
+            return SampleSet.Default;
+
+        return Enum.IsDefined(typeof(SampleSet), (uint)value)
+            ? (SampleSet)(uint)value
+            : SampleSet.Default;
+    }
+
+    private static uint? ParseOptionalUInt(string[] split, int index)
+    {
+        if (split.Length <= index || string.IsNullOrWhiteSpace(split[index]))
+            return null;
+
+        if (!long.TryParse(split[index], NumberStyles.Integer, CultureInfo.InvariantCulture, out var value))
+            return 0;
+
+        if (value < 0 || value > uint.MaxValue)
+            return 0;
+
+        return (uint)value;
     }
 
     /// <summary>
