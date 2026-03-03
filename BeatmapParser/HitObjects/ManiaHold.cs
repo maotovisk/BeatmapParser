@@ -75,17 +75,43 @@ public class ManiaHold : HitObject
     {
         try
         {
-            var hasHitSample = splitData.Last().Contains(":");
+            if (splitData.Count < 6)
+                throw new Exception("Invalid mania hold hit object line.");
+
+            var typeValue = int.Parse(splitData[3], CultureInfo.InvariantCulture);
+            var hitSoundValue = int.Parse(splitData[4], CultureInfo.InvariantCulture);
             var timeMilliseconds = double.Parse(splitData[2], CultureInfo.InvariantCulture);
-            var endMilliseconds = double.Parse(splitData[5], CultureInfo.InvariantCulture);
+
+            // Mania holds may be encoded as:
+            // - stable style: endTime:sampleSet:additionSet:index:volume:filename
+            // - legacy/parser style: endTime,sampleSet:additionSet:index:volume:filename
+            var endField = splitData[5];
+            string endMillisecondsRaw;
+            string? hitSampleRaw = null;
+
+            var firstColon = endField.IndexOf(':');
+            if (firstColon >= 0)
+            {
+                endMillisecondsRaw = endField[..firstColon];
+                hitSampleRaw = endField[(firstColon + 1)..];
+            }
+            else
+            {
+                endMillisecondsRaw = endField;
+                if (splitData.Count > 6)
+                    hitSampleRaw = splitData[6];
+            }
+
+            var endMilliseconds = double.Parse(endMillisecondsRaw, CultureInfo.InvariantCulture);
+            var hitSample = string.IsNullOrWhiteSpace(hitSampleRaw) ? new HitSample() : HitSample.Decode(hitSampleRaw);
 
             return new ManiaHold(
                 coordinates: new Vector2(float.Parse(splitData[0], CultureInfo.InvariantCulture), float.Parse(splitData[1], CultureInfo.InvariantCulture)),
                 timeMilliseconds: timeMilliseconds,
-                type: Helpers.Helper.ParseHitObjectType(int.Parse(splitData[3])),
-                hitSounds: !hasHitSample ? (new HitSample(), Helpers.Helper.ParseHitSounds(int.Parse(splitData[4]))) : (HitSample.Decode(splitData.Last()), Helpers.Helper.ParseHitSounds(int.Parse(splitData[4]))),
-                newCombo: (int.Parse(splitData[3]) & (1 << 2)) != 0,
-                comboOffset: (uint)((int.Parse(splitData[3]) & (1 << 4 | 1 << 5 | 1 << 6)) >> 4),
+                type: Helpers.Helper.ParseHitObjectType(typeValue),
+                hitSounds: (hitSample, Helpers.Helper.ParseHitSounds(hitSoundValue)),
+                newCombo: (typeValue & (1 << 2)) != 0,
+                comboOffset: (uint)((typeValue & (1 << 4 | 1 << 5 | 1 << 6)) >> 4),
                 endMilliseconds: endMilliseconds
             );
         }
@@ -118,9 +144,9 @@ public class ManiaHold : HitObject
         builder.Append($"{type},");
         builder.Append($"{Helpers.Helper.EncodeHitSounds(HitSounds.Sounds)},");
 
-        builder.Append($"{Helpers.Helper.FormatTime(_endMilliseconds)},");
-
-        builder.Append($"{HitSounds.SampleData.Encode()}");
+        // Mania hold tail is encoded in a single field as "endTime:sampleData".
+        builder.Append($"{Helpers.Helper.FormatTime(_endMilliseconds)}:");
+        builder.Append(HitSounds.SampleData.Encode());
 
         return builder.ToString();
     }

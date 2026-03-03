@@ -106,5 +106,14 @@ public class BeatmapEncodingTests
             Assert.That(encoded, Does.Contain(lazerBeatmap));
         }
     }
-}
 
+    [Test]
+    public void Encode_ManiaHold_ShouldUseSingleTailFieldFormat()
+    {
+        var beatmap = Beatmap.Decode(TestData.ManiaHoldLegacyTailBeatmapContent);
+        var encoded = beatmap.Encode().Replace("\r\n", "\n");
+
+        Assert.That(encoded, Does.Contain("64,192,1000,128,0,2828:0:0:0:0:"));
+        Assert.That(encoded, Does.Not.Contain("64,192,1000,128,0,2828,0:0:0:0:"));
+    }
+}

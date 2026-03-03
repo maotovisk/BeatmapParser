@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using BeatmapParser;
+using BeatmapParser.HitObjects;
 using BeatmapParser.Sections;
 
 namespace BeatmapParser.Tests.BeatmapTests;
@@ -50,5 +51,29 @@ public class BeatmapDecodingTests
         Assert.That(beatmap, Is.Not.Null);
         Assert.That(beatmap.Colours, Is.Null);
         Assert.That(beatmap.Editor, Is.Null);
+    }
+
+    [Test]
+    public void Decode_ManiaHold_WithStableTailFormat_ShouldParseSuccessfully()
+    {
+        var beatmap = Beatmap.Decode(TestData.ManiaHoldStableTailBeatmapContent);
+
+        Assert.That(beatmap.HitObjects.Objects, Has.Count.EqualTo(1));
+        Assert.That(beatmap.HitObjects.Objects[0], Is.TypeOf<ManiaHold>());
+
+        var hold = (ManiaHold)beatmap.HitObjects.Objects[0];
+        Assert.That(hold.End.TotalMilliseconds, Is.EqualTo(2828));
+    }
+
+    [Test]
+    public void Decode_ManiaHold_WithLegacyCommaTailFormat_ShouldParseSuccessfully()
+    {
+        var beatmap = Beatmap.Decode(TestData.ManiaHoldLegacyTailBeatmapContent);
+
+        Assert.That(beatmap.HitObjects.Objects, Has.Count.EqualTo(1));
+        Assert.That(beatmap.HitObjects.Objects[0], Is.TypeOf<ManiaHold>());
+
+        var hold = (ManiaHold)beatmap.HitObjects.Objects[0];
+        Assert.That(hold.End.TotalMilliseconds, Is.EqualTo(2828));
     }
 }
