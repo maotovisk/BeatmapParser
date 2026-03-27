@@ -14,6 +14,8 @@ public static class TestData
 
     public const string HitSampleOverflowIndexBeatmapContent = "osu file format v14\n\n[General]\nAudioFilename: audio.mp3\n\n[Metadata]\nTitle:Test\nArtist:Test\nCreator:Test\nVersion:Normal\n\n[Difficulty]\nHPDrainRate:5\nCircleSize:4\nOverallDifficulty:5\nApproachRate:5\nSliderMultiplier:1.4\nSliderTickRate:1\n\n[Events]\n\n[HitObjects]\n256,192,1000,1,0,2:3:99999999999999999999:0:\n";
 
+    public const string SliderShortEdgeSoundsBeatmapContent = "osu file format v14\n\n[General]\nAudioFilename: audio.mp3\nMode:0\n\n[Metadata]\nTitle:Test\nArtist:Test\nCreator:Test\nVersion:Normal\n\n[Difficulty]\nHPDrainRate:5\nCircleSize:4\nOverallDifficulty:5\nApproachRate:5\nSliderMultiplier:1.4\nSliderTickRate:1\n\n[TimingPoints]\n0,500,4,2,0,50,1,0\n\n[Events]\n\n[HitObjects]\n256,192,1000,2,0,B|356:192,1,84,2,2:0|0:0,0:0:0:0:\n";
+
     public static readonly string ReallyComplexBeatmap = LoadResourceAsset("really_complex_beatmap.osu");
 
     public static readonly string LazerBeatmap = LoadResourceAsset("lazer_beatmap.osu");

@@ -167,9 +167,13 @@ public class Slider : HitObject
 
             if (split.Count > 9)
             {
-                var edgeHitSounds = split[8].Split("|").Select(sound => Helpers.Helper.ParseHitSounds(int.Parse(sound)).Distinct().ToList()).ToList();
-                var edgeSampleSets = split[9].Split('|').Select(HitSample.Decode).ToList();
-                sliderHitSounds = edgeHitSounds.Zip(edgeSampleSets, (hitSound, sampleSet) => (sampleSet, hitSound)).ToList();
+                var edgeCount = Math.Max(2, ParseSlides(split[6]) + 1);
+                var edgeHitSounds = ParseEdgeHitSounds(split[8], edgeCount);
+                var edgeSampleSets = ParseEdgeSampleSets(split[9], edgeCount);
+
+                sliderHitSounds = Enumerable.Range(0, edgeCount)
+                    .Select(i => (edgeSampleSets[i], edgeHitSounds[i]))
+                    .ToList();
             }
 
             var objectParams = split[5].Split('|');
@@ -246,14 +250,14 @@ public class Slider : HitObject
             {
                 LegacyCurveType = legacyCurveType,
                 ControlPoints = controlPoints,
-                Slides = uint.Parse(split[6] == "NaN" ? "1" : split[6]),
+                Slides = (uint)ParseSlides(split[6]),
                 Length = double.Parse(split[7] == "NaN" ? "0" : split[7], CultureInfo.InvariantCulture),
                 EndTime = Helpers.Helper.CalculateEndTime(
                     sliderMultiplier: difficultySection.SliderMultiplier * timingPoints.GetSliderVelocityAt(baseObject.TimeMilliseconds),
                     beatLength: timingPoints.GetUninheritedTimingPointAt(baseObject.TimeMilliseconds)?.BeatLength ?? 500,
                     startTime: baseObject.Time,
                     pixelLength: double.Parse(split[7] == "NaN" ? "0" : split[7], CultureInfo.InvariantCulture),
-                    repeats: int.Parse(split[6] == "NaN" ? "1" : split[6])
+                    repeats: ParseSlides(split[6])
                 ),
                 HeadSounds = sliderHitSounds.Count == 0 ? (new HitSounds.HitSample(), new List<HitSound>()) : sliderHitSounds[0],
                 RepeatSounds = sliderHitSounds.Count > 2 ? sliderHitSounds[1..^1] : null,
@@ -445,4 +449,39 @@ public class Slider : HitObject
         sample.AdditionSet != SampleSet.Default ||
         sample.Index != 0 ||
         sample.Volume != 0;
+
+    private static int ParseSlides(string value)
+    {
+        return int.Parse(value == "NaN" ? "1" : value);
+    }
+
+    private static List<List<HitSound>> ParseEdgeHitSounds(string rawEdgeSounds, int edgeCount)
+    {
+        var parsed = rawEdgeSounds
+            .Split('|')
+            .Select(sound => Helpers.Helper.ParseHitSounds(int.Parse(sound)).Distinct().ToList())
+            .ToList();
+
+        while (parsed.Count < edgeCount)
+        {
+            parsed.Add([HitSound.None]);
+        }
+
+        return parsed;
+    }
+
+    private static List<HitSample> ParseEdgeSampleSets(string rawEdgeSampleSets, int edgeCount)
+    {
+        var parsed = rawEdgeSampleSets
+            .Split('|')
+            .Select(HitSample.Decode)
+            .ToList();
+
+        while (parsed.Count < edgeCount)
+        {
+            parsed.Add(new HitSample());
+        }
+
+        return parsed;
+    }
 }

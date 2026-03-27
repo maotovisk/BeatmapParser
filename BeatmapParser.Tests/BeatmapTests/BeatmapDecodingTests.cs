@@ -1,5 +1,6 @@
 using NUnit.Framework;
 using BeatmapParser;
+using BeatmapParser.Enums;
 using BeatmapParser.HitObjects;
 using BeatmapParser.Sections;
 
@@ -95,5 +96,20 @@ public class BeatmapDecodingTests
 
         Assert.That(sample.Index, Is.EqualTo(0));
         Assert.That(sample.Volume, Is.EqualTo(0));
+    }
+
+    [Test]
+    public void Decode_SliderWithShortEdgeSounds_PadsMissingEdgesWithDefaults()
+    {
+        var beatmap = Beatmap.Decode(TestData.SliderShortEdgeSoundsBeatmapContent);
+
+        Assert.That(beatmap.HitObjects.Objects, Has.Count.EqualTo(1));
+        Assert.That(beatmap.HitObjects.Objects[0], Is.TypeOf<Slider>());
+
+        var slider = (Slider)beatmap.HitObjects.Objects[0];
+        Assert.That(slider.HeadSounds.Sounds, Is.EqualTo(new[] { HitSound.Whistle }));
+        Assert.That(slider.TailSounds.Sounds, Is.EqualTo(new[] { HitSound.None }));
+        Assert.That(slider.HeadSounds.SampleData.NormalSet, Is.EqualTo(SampleSet.Soft));
+        Assert.That(slider.TailSounds.SampleData.NormalSet, Is.EqualTo(SampleSet.Default));
     }
 }
